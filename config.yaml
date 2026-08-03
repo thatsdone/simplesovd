@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# simplesovd: A simple implementation of SOVD (ISO 17973)
+#
+# License:
+#   Apache License, Version 2.0
+# History:
+#   * 2026/08/02 v0.1 Initial version
+# Author:
+#   Masanori Itoh <masanori.itoh@gmail.com>
+# TODO:
+#   * many
+config:
+  base_uri: 'http://localhost:7690/simplesovd/v1'
+
+sovd:
+  features:
+    - 'docs'                 # 7.5 capability description
+    - 'faults'               # 7.8
+    - 'data'                 # 7.9
+    - 'data-categories'      # 7.9
+    - 'data-group'           # 7.9
+    - 'data-lists'           # 7.9
+    - 'cyclic-subscriptions' # 7.10
+    - 'triggers'             # 7.11
+    - 'configurations'       # 7.12
+    - 'clear-data'           # 7.13
+    - 'operations'           # 7.14
+    - 'scripts'              # 7.15
+    - 'modes'                # 7.16
+    - 'locks'                # 7.17
+    - 'status'               # 7.19
+    - 'bulk-data'            # 7.20
+    - 'logs'                 # 7.21 logging
+    - 'communication-logs'   # 7.22 communication-logs
+  
+topology:
+  areas:
+    Connected:
+    Cockpit:
+    Driving:
+    Body:
+  components:
+    TCU:
+      type: 'Legacy'
+      canid: 0x7E3
+      area: 'Connected'
+    IVI:
+      type: 'Hybrid'
+      canid: 0x7E4
+      area: 'Cockpit'
+    Meter:
+      type: 'Hybrid'
+      canid: 0x7E5
+      area: 'Cockpit'
+    #
+    EngineECU:
+      type: 'Legacy'
+      canid: 0x7E0
+      area: 'Driving'
+    TransmissionECU:
+      type: 'Legacy'
+      canid: 0x7E1
+      area: 'Driving'
+    HybridECU:
+      type: 'Legacy'
+      canid: 0x7E2
+      area: 'Driving'
+
+  apps:
+    SOVDApplication1:
+
+  functions:
+    VehicleHealth:
