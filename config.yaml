@@ -13,6 +13,8 @@
 #   * many
 config:
   base_uri: 'http://localhost:7690/simplesovd/v1'
+  # for built-in CDA(UDS)
+  can_interface: 'vcan0'
 
 sovd:
   features:
@@ -34,7 +36,7 @@ sovd:
     - 'bulk-data'            # 7.20
     - 'logs'                 # 7.21 logging
     - 'communication-logs'   # 7.22 communication-logs
-  
+
 topology:
   areas:
     Connected:
@@ -44,12 +46,16 @@ topology:
   components:
     TCU:
       type: 'Legacy'
-      canid: 0x7E3
+      #canid: 0x7E3
       area: 'Connected'
     IVI:
       type: 'Hybrid'
       canid: 0x7E4
       area: 'Cockpit'
+      faults:
+        - 0x012308 # P0123 Confirmed (0x08)
+        - 0x020108 # P0201 Confirmed (0x08)
+        - 0x030008 # P0300 Confirmed (0x08)
     Meter:
       type: 'Hybrid'
       canid: 0x7E5
@@ -73,3 +79,4 @@ topology:
 
   functions:
     VehicleHealth:
+    UDSGateway:

@@ -14,7 +14,7 @@ $ pip install -r requirements
 
 Run the application.
 ```
-$ uvicorn main:app --port 1920
+$ uvicorn main:app --port 7690
 ```
 
 Append `--reload` if you like.
