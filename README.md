@@ -23,6 +23,11 @@ Append `--reload` if you like.
 Thus, access to 'http://localhost:1920/simplesovd/v1/areas' etc.
 Also, you can define your own vehicle topology using 'config.yaml'
 
+## License
+Apache License, Version 2.0
+
+## Author
+Masanori Itoh <masanori.itoh@gmail.com>
 
 ## References
 ### Standards
