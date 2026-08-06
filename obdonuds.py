@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# simplesovd: A simple implementation of SOVD (ISO 17973)
+# obdonuds.py: A simple OBD client tool
 #
 # License:
 #   Apache License, Version 2.0
 # History:
-#   * 2026/08/02 v0.1 Initial version
+#   * 2026/08/06 v0.1 blush up
 # Author:
 #   Masanori Itoh <masanori.itoh@gmail.com>
 # TODO:
-#   * many
+#   * Support DoIP
+#   * Support J1979 (Legacy OBD)
 import time
 import argparse
 
@@ -70,7 +71,8 @@ def scan_obd_protocol():
             if rx.arbitration_id not in detected_ecus:
                 detected_ecus.append(rx.arbitration_id)
 
-            # Check positibe responses (top 0x04 measnd data length(4bytes), 0x22 means successful response, 0xF810 is ID DID)
+            # Check positive responses (top 0x04 means data length(4bytes),
+            # 0x22 means successful response, 0xF810 is DID)
             if len(rx.data) >= 5 and rx.data[1] == 0x62 and rx.data[2] == 0xF8 and rx.data[3] == 0x10:
                 j1979_2_detected = True
                 version = rx.data[4]
@@ -86,6 +88,7 @@ def scan_obd_protocol():
         bus.shutdown()
 
 def send_tester_present(socket):
+    rx_payload = None
     try:
         # send Tester Present with response request
         socket.send(bytes([0x3E, 0x00]))
@@ -93,9 +96,10 @@ def send_tester_present(socket):
         print(dump_msg(rx_payload), '/', 'Tester Present Positive Response')
     except TimeoutError:
         if args.debug:
-            print(time.time(), 'timeout: %s %3X' % (interface, rx_id))
+            print(time.time(), 'timeout: %s %3X' % (args.interface, rx_id))
 
 def send_get_vin(socket):
+    rx_payload = None
     try:
         # get VIN / 03 22 F8 02
         socket.send(bytes([0x22, 0xF8, 0x02]))
@@ -103,10 +107,11 @@ def send_get_vin(socket):
         print(dump_msg(rx_payload), '/', rx_payload[3:].decode('utf-8'))
     except TimeoutError:
         if args.debug:
-            print(time.time(), 'timeout: %s %3X' % (interface, rx_id))
+            print(time.time(), 'timeout: %s %3X' % (args.interface, rx_id))
         print(type(rx_payload), rx_payload)
 
 def send_get_ecu_name(socket):
+    rx_payload = None
     try:
         # get VIN / 03 22 F8 0A
         socket.send(bytes([0x22, 0xF8, 0x0A]))
@@ -114,20 +119,22 @@ def send_get_ecu_name(socket):
         print(dump_msg(rx_payload), '/', rx_payload[3:].decode('utf-8'))
     except TimeoutError:
         if args.debug:
-            print(time.time(), 'timeout: %s %3X' % (interface, rx_id))
+            print(time.time(), 'timeout: %s %3X' % (args.interface, rx_id))
         print(type(rx_payload), rx_payload)
 
 def send_get_sw_version(socket):
+    rx_payload = None
     try:
         socket.send(bytes([0x22, 0xF1, 0x89]))
         rx_payload = socket.recv()
         print(dump_msg(rx_payload), '/', rx_payload[3:].decode('utf-8'))
     except TimeoutError:
         if args.debug:
-            print(time.time(), 'timeout: %s %3X' % (interface, rx_id))
+            print(time.time(), 'timeout: %s %3X' % (args.interface, rx_id))
         print(type(rx_payload), rx_payload)
 
 def send_get_rpm(socket):
+    rx_payload = None
     try:
         # get RPM  F40C
         socket.send(bytes([0x22, 0xF4, 0x0C]))
@@ -135,9 +142,10 @@ def send_get_rpm(socket):
         print(dump_msg(rx_payload), '/', (rx_payload[3] * 256 + rx_payload[4])/4)
     except TimeoutError:
         if args.debug:
-            print(time.time(), 'timeout: %s %3X' % (interface, rx_id))
+            print(time.time(), 'timeout: %s %3X' % (args.interface, rx_id))
 
 def send_get_speed(socket):
+    rx_payload = None
     try:
         # get SPEED  F40C
         socket.send(bytes([0x22, 0xF4, 0x0D]))
@@ -145,10 +153,11 @@ def send_get_speed(socket):
         print(dump_msg(rx_payload), '/', rx_payload[3])
     except TimeoutError:
         if args.debug:
-            print(time.time(), 'timeout: %s %3X' % (interface, rx_id))
+            print(time.time(), 'timeout: %s %3X' % (args.interface, rx_id))
         print(type(rx_payload), rx_payload)
 
 def send_get_throttle(socket):
+    rx_payload = None
     try:
         # get SPEED  F40C
         socket.send(bytes([0x22, 0xF4, 0x11]))
@@ -156,10 +165,11 @@ def send_get_throttle(socket):
         print(dump_msg(rx_payload), '/', rx_payload[3] * 100 / 255)
     except TimeoutError:
         if args.debug:
-            print(time.time(), 'timeout: %s %3X' % (interface, rx_id))
+            print(time.time(), 'timeout: %s %3X' % (args.interface, rx_id))
         print(type(rx_payload), rx_payload)
 
 def send_get_ambient_temp(socket):
+    rx_payload = None
     try:
         # get SPEED  F40C
         socket.send(bytes([0x22, 0xF4, 0x46]))
@@ -167,10 +177,11 @@ def send_get_ambient_temp(socket):
         print(dump_msg(rx_payload), '/', rx_payload[3])
     except TimeoutError:
         if args.debug:
-            print(time.time(), 'timeout: %s %3X' % (interface, rx_id))
+            print(time.time(), 'timeout: %s %3X' % (args.interface, rx_id))
         print(type(rx_payload), rx_payload)
 
 def send_get_all_dtcs(socket):
+    rx_payload = None
     try:
         # 7E0  8  03 19 02 0F 00 00 00 00 (SID: 19, SF: 02, mask: 0F)
         #   02: reportDTCByStatusMask
@@ -183,14 +194,25 @@ def send_get_all_dtcs(socket):
         for i in range(0, count):
             dtcs.append(int.from_bytes(rx_payload[offset+i*3:offset+(i*3)+3], 'big'))
         return dtcs
-
     except TimeoutError:
         if args.debug:
-            print(time.time(), 'timeout: %s %3X' % (interface, rx_id))
+            print(time.time(), 'timeout: %s %3X' % (args.interface, rx_id))
+        print(type(rx_payload), rx_payload)
+
+def send_get_dtc_count(socket):
+    rx_payload = None
+    try:
+        socket.send(bytes([0x19, 0x01, 0x0F]))
+        rx_payload = socket.recv()
+        # NOTE: rx_payload[4:6] means byte 4 and 5.
+        print(dump_msg(rx_payload), '/', '%d DTCs' % (int.from_bytes(rx_payload[4:6], byteorder='big')))
+    except TimeoutError:
+        if args.debug:
+            print(time.time(), 'timeout: %s %3X' % (args.interface, rx_id))
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="aaa.py")
+    parser = argparse.ArgumentParser(description="obdonuds.py")
     parser.add_argument("--poll_timeout", type=float, default=0.1)
     parser.add_argument("-i", "--interface", default='vcan0')
     parser.add_argument("-b", "--broadcast", default=0x7DF)
@@ -224,6 +246,7 @@ if __name__ == "__main__":
     send_get_speed(socket)
     send_get_throttle(socket)
     send_get_ambient_temp(socket)
+    send_get_dtc_count(socket)
     send_get_all_dtcs(socket)
 
     for canid in args.ecus[1:]:
@@ -235,7 +258,8 @@ if __name__ == "__main__":
         s.settimeout(10.0)
         send_get_ecu_name(s)
         send_get_sw_version(s)
+        send_get_dtc_count(s)
+        send_get_all_dtcs(s)
         s.close()
 
     socket.close()
-

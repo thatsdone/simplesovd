@@ -69,6 +69,9 @@ def handle_component_one(request: Request, subpath: str):
 
                 resp_body = dict()
                 resp_body['items'] = list()
+                if not data:
+                    return resp_body
+
                 for dtc in data:
                     item = dict()
                     item['code'] = '%06X' % dtc
