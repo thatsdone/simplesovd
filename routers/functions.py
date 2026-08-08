@@ -26,6 +26,6 @@ methods = ['GET']
 @router.api_route('/', methods=methods)
 @router.api_route('/{subpath:path}', methods=methods)
 def handle_functions(request: Request):
-    
+
     resp = common_router.handle_entities(request)
     return resp

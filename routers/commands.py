@@ -19,7 +19,7 @@ from routers import common_router
 router = APIRouter()
 
 commands = ['status', 'restart']
-    
+
 methods = ['GET', 'DELETE', 'POST', 'PUT']
 #methods = ['GET']
 @router.api_route('', methods=methods)
@@ -32,7 +32,7 @@ def command_list_handler(request: Request):
         resp_body = dict()
         resp_body['command'] = cmd
         resp_body['href'] = '%s/%s' % (request.url, cmd)
-        
+
         resp['items'].append(resp_body)
     return resp
 
