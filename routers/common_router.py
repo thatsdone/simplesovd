@@ -15,7 +15,7 @@ from fastapi import APIRouter, Request
 import asyncio
 import json
 
-def handle_entities(request: Request):
+def handle_entities(request: Request, subpath: str):
 
     entity_collection = request.url.path.split('/')[3]
     resp = dict()
@@ -29,4 +29,4 @@ def handle_entities(request: Request):
                                                     elm)
                               })
     return resp
-    
+

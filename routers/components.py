@@ -26,7 +26,7 @@ methods = ['GET']
 @router.api_route('/', methods=methods)
 def handle_components(request: Request):
 
-    resp = common_router.handle_entities(request)
+    resp = common_router.handle_entities(request, None)
     return resp
 
 
