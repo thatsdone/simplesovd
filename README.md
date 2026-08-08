@@ -23,6 +23,18 @@ Append `--reload` if you like.
 Thus, access to 'http://localhost:1920/simplesovd/v1/areas' etc.
 Also, you can define your own vehicle topology using 'config.yaml'
 
+simplesovd refers some environment variables.
+
+* SIMPLESOVD_CONFIG
+  * You can specify your config file.
+* SIMPLESOVD_DEBUG
+  * If you set any value other than 0, simplesovd runs in debug mode.
+
+## TODO
+* Swicth to async mode and use httpx instead of requests
+* Refactoring
+* Split built-in CDA
+
 ## License
 Apache License, Version 2.0
 

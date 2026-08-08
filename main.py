@@ -32,6 +32,11 @@ simplesovd_debug = os.getenv("SIMPLESOVD_DEBUG")
 if simplesovd_debug and int(simplesovd_debug) != 0:
     debug = True
 
+simplesovd_config = os.getenv("SIMPLESOVD_CONFIG")
+print('simplesovd_config:', simplesovd_config)
+if not simplesovd_config:
+    simplesovd_config = 'config.yaml'
+
 logger = logging.getLogger('simplesovd')
 #
 log_level = "DEBUG" if debug else "INFO"
@@ -52,7 +57,7 @@ async def lifespan(app: FastAPI):
 
     #async_loop = asyncio.get_running_loop()
 
-    with open('config.yaml', 'rt') as fp:
+    with open(simplesovd_config, 'rt') as fp:
         predefined_config = yaml.load(fp, Loader=yaml.SafeLoader)
     if not predefined_config:
         sys.exit()

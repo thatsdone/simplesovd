@@ -75,6 +75,8 @@ topology:
 
   apps:
     SOVDApplication1:
+      # An SOVD native entity server
+      href: 'http://127.0.0.1:20004/entityserver/v1/apps/SOVDApplication1'
 
   functions:
     VehicleHealth:
