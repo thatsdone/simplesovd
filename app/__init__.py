@@ -6,8 +6,6 @@
 # License:
 #   Apache License, Version 2.0
 # History:
-#   * 2026/08/03 v0.1 Initial version
+#   * 2026/08/09 v0.2 Initial version
 # Author:
 #   Masanori Itoh <masanori.itoh@gmail.com>
-# TODO:
-#   * many

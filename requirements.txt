@@ -1,7 +1,8 @@
 uvicorn
 fastapi
 httpx
+PyYAML
 #
 can
 can-isotp
-py-uds
+#py-uds

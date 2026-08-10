@@ -11,6 +11,8 @@
 # TODO:
 #   * many
 config:
+  vendor_prefix: '/simplesovd/v1'
+  version: '0.0.1'
   base_uri: 'http://localhost:7690/simplesovd/v1'
   # for built-in CDA(UDS on CAN)
   can_interface: 'vcan0'
