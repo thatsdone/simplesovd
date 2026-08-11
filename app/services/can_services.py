@@ -9,6 +9,7 @@
 #   * 2026/08/09 v0.2 Initial version
 # Author:
 #   Masanori Itoh <masanori.itoh@gmail.com>
+from fastapi import HTTPException, status
 import asyncio
 
 import can
@@ -57,4 +58,7 @@ async def can_query(payload: bytes) -> bytes:
             return response
         except Exception as e:
             logger.error(f'Failed CAN transaction: {e}')
-            raise
+            raise HTTPException(
+                status_code = status. HTTP_503_SERVICE_UNAVAILABLE,
+                detail=f'Service unavailable'
+            )
