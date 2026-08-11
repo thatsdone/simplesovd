@@ -45,7 +45,7 @@ def _blocking_isotp_worker(payload: bytes):
         return response
 
     except Exception as e:
-        logger.error('Exception: ', e)
+        logger.error(f'Exception: {e}')
         raise
     finally:
         socket.close()
@@ -56,5 +56,5 @@ async def can_query(payload: bytes) -> bytes:
             response = await asyncio.to_thread(_blocking_isotp_worker, payload)
             return response
         except Exception as e:
-            logger.error('Failed CAN transaction: ', e)
+            logger.error(f'Failed CAN transaction: {e}')
             raise

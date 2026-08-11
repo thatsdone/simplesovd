@@ -28,18 +28,18 @@ async def get_functions(request: Request,
     return functions_list
 
 @router.api_route('/{entity_id}', methods=methods)
-async def get_functions_by_id(request: Request,
-                              function_data: dict = Depends(get_current_app)):
-    logger.debug("get_functions_by_id() called.")
+async def get_function_by_id(request: Request,
+                             function_data: dict = Depends(get_current_app)):
+    logger.debug("get_function_by_id() called.")
 
     return function_data
 
 from  app.services.can_services import can_query
 @router.api_route('/{entity_id}/{subpath:path}', methods=methods)
-async def get_functions_with_subpath(request: Request,
-                                function_data: dict = Depends(get_current_app),
-                                subpath: str = ''):
-    logger.debug('get_functions_with_subpath() called: %s ', subpath)
+async def get_function_with_subpath(request: Request,
+                                    function_data: dict = Depends(get_current_app),
+                                    subpath: str = ''):
+    logger.debug('get_function_with_subpath() called: %s ', subpath)
 
     # DEBUG for built-in CDA(WIP)
     if request.url.path.split('/')[4] == 'UDSGateway' and subpath == 'data/vin':

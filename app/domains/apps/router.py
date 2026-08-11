@@ -28,16 +28,16 @@ async def get_apps(request: Request,
     return apps_list
 
 @router.api_route('/{entity_id}', methods=methods)
-async def get_apps_by_id(request: Request,
-                         app_data: dict = Depends(get_current_app)):
-    logger.debug("get_apps_by_id() called.")
+async def get_app_by_id(request: Request,
+                        app_data: dict = Depends(get_current_app)):
+    logger.debug("get_app_by_id() called.")
 
     return app_data
 
 @router.api_route('/{entity_id}/{subpath:path}', methods=methods)
-async def get_apps_with_subpath(request: Request,
+async def get_app_with_subpath(request: Request,
                                 app_data: dict = Depends(get_current_app),
                                 subpath: str = ''):
-    logger.debug('get_apps_with_subpath() called: %s ', subpath)
+    logger.debug('get_app_with_subpath() called: %s ', subpath)
 
     return app_data

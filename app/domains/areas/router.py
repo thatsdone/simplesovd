@@ -23,13 +23,15 @@ get_current_app = EntityDiscovery(collection_name = 'areas')
 methods = ['GET']
 @router.api_route('', methods=methods)
 async def get_areas(areas_list: dict = Depends(get_entity_collection)):
-    logger.debug("get_components() called.")
+    logger.debug('get_areas() called.')
     return areas_list
 
 @router.api_route('/{entity_id}', methods=methods)
 async def get_area_by_id(request: Request,
                          area_data: dict = Depends(get_current_app)):
-    logger.debug("DEBUG: get_components_by_id() called.")
-    print('DEBUG: area: ', area_data)
+    logger.debug('DEBUG: get_area_by_id() called.')
+
+    logger.debug(f'DEBUG: area: {area_data}')
     area_data['contains'] = '%s/contains' % (request.url)
+
     return area_data

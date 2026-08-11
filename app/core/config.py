@@ -44,8 +44,7 @@ class SOVDConfig:
             self.predefined_config = yaml.load(fp, Loader=yaml.SafeLoader)
             if not self.predefined_config:
                 sys.exit()
-        if self.debug:
-            pprint.pprint(self.predefined_config)
+        self.logger.debug(pprint.pformat(self.predefined_config))
 
 sovd_config = SOVDConfig()
 

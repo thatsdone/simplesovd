@@ -27,14 +27,14 @@ async def get_components(components_list: dict = Depends(get_entity_collection))
     return components_list
 
 @router.api_route('/{entity_id}', methods=methods)
-async def get_components_by_id(component_data: dict = Depends(get_current_app)):
-    logger.debug("DEBUG: get_components_by_id() called.")
+async def get_component_by_id(component_data: dict = Depends(get_current_app)):
+    logger.debug("DEBUG: get_component_by_id() called.")
     return component_data
 
 @router.api_route('/{entity_id}/{subpath:path}', methods=methods)
-async def get_components_with_subpath(request: Request,
-                                      component_data: dict = Depends(get_current_app),
+async def get_component_with_subpath(request: Request,
+                                     component_data: dict = Depends(get_current_app),
                                       subpath: str = ''):
-    logger.debug('get_components_with_subpath() called: %s ', subpath)
+    logger.debug('get_component_with_subpath() called: %s ', subpath)
 
     return component_data

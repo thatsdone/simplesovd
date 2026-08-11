@@ -97,9 +97,9 @@ class EntityDiscovery:
                 )
 
         elif entity_ref and entity_ref.get('type', None) and entity_ref.get('canid', {}):
-            print('DEBUG: entity_id: %s %s %03X' % (entity_id,
-                                              entity_ref.get('type'),
-                                              entity_ref.get('canid')
-                                              ))
+            logger.debug('entity_id: %s %s %03X' % (entity_id,
+                                                    entity_ref.get('type'),
+                                                    entity_ref.get('canid')
+                                                    ))
 
         return res
