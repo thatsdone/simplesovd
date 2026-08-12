@@ -9,30 +9,35 @@
 #   * 2026/08/09 v0.2 Initial version
 # Author:
 #   Masanori Itoh <masanori.itoh@gmail.com>
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Request
 #
-from app.core.config import get_logger, sovd_config
+from app.core.config import get_logger
 
 logger = get_logger(__name__)
 
 router = APIRouter()
 
 @router.get('')
-async def get_root():
+async def get_root(request: Request):
     logger.debug("get_status() called.")
-    base_uri = sovd_config.predefined_config['config']['base_uri']
+    conf = request.state.conf.predefined_config
+    base_uri = conf['config']['base_uri']
     res = {'items': ['status','command']}
     return res
 
 @router.get('/status')
-async def get_status():
+async def get_status(request: Request):
     logger.debug("get_status() called.")
+    conf = request.state.conf.predefined_config
+    base_uri = conf['config']['base_uri']
+    vendor_prefix = conf['config']['vendor_prefix']
+    version = conf['config']['version']
     res = {
         'version': '1.1',
-        'base_uri': sovd_config.predefined_config['config']['base_uri'],
+        'base_uri': base_uri,
         'vendor_info': {
             'name': 'simplesovd',
-            'version': sovd_config.predefined_config['config']['version']
+            'version': version
         },
         'status': 'UP'
     }

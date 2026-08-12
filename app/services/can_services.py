@@ -15,8 +15,9 @@ import asyncio
 import can
 import isotp
 import logging
+from fastapi import Request
 
-from app.core.config import get_logger, sovd_config
+from app.core.config import get_logger
 
 can_lock = asyncio.Lock()
 logger = get_logger(__name__)
@@ -24,13 +25,14 @@ logger = get_logger(__name__)
 # TODO: make it as configurable
 can_timeout = 2.0
 
-def _blocking_isotp_worker(payload: bytes):
-    socket = isotp.socket()
+def _blocking_isotp_worker(payload: bytes, request: Request):
 
-    can_interface = sovd_config.predefined_config.get('config', {}).get('can_interface', None)
+    conf = request.state.conf.predefined_config
+    can_interface = conf.get('config', {}).get('can_interface', None)
     if not can_interface:
         logger.error('can_interface not found in config.')
         return
+    socket = isotp.socket()
 
     # TODO:
     # * refer somewhere or allow multiple isotp sockets handling
@@ -51,10 +53,15 @@ def _blocking_isotp_worker(payload: bytes):
     finally:
         socket.close()
 
-async def can_query(payload: bytes) -> bytes:
+async def can_query(payload: bytes, request: Request) -> bytes:
+
+    logger.debug('can_query() called.')
+    conf = request.state.conf.predefined_config
+
     async with can_lock:
         try:
-            response = await asyncio.to_thread(_blocking_isotp_worker, payload)
+            response = await asyncio.to_thread(_blocking_isotp_worker,
+                                               payload, request)
             return response
         except Exception as e:
             logger.error(f'Failed CAN transaction: {e}')

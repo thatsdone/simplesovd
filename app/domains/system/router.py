@@ -11,21 +11,25 @@
 #   Masanori Itoh <masanori.itoh@gmail.com>
 from fastapi import APIRouter, Depends, Request
 #
-from app.core.config import get_logger, sovd_config
+from app.core.config import get_logger
 
 logger = get_logger(__name__)
 
 router = APIRouter()
 
 @router.get('/version-info')
-async def get_version_info():
+async def get_version_info(request: Request):
     logger.debug("get_version_info() called.")
+    conf = request.state.conf.predefined_config
+    base_uri = conf['config']['base_uri']
+    vendor_prefix = conf['config']['vendor_prefix']
+    version = conf['config']['version']
     res = {
         'version': '1.1',
-        'base_uri': sovd_config.predefined_config['config']['base_uri'],
+        'base_uri': vendor_prefix,
         'vendor_info': {
             'name': 'simplesovd',
-            'version': sovd_config.predefined_config['config']['version']
+            'version': version
         }
     }
     return res

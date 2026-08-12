@@ -19,10 +19,10 @@ def get_entity_collection(request: Request) -> dict:
     logger.debug('get_entity_collection(): %s' % (request.url))
     entity_collection = request.url.path.split('/')[3]
 
-    sovd_config = request.state.config
+    conf = request.state.conf.predefined_config
     res = {'items': []}
-    for item in sovd_config.get('topology', {}).get(entity_collection, {}):
-        elm = sovd_config.get('topology', {}).get(entity_collection, {}).get(item, None)
+    for item in conf.get('topology', {}).get(entity_collection, {}):
+        elm = conf.get('topology', {}).get(entity_collection, {}).get(item, None)
         entity = dict()
         entity['id'] = item
         entity['name'] = item
@@ -41,9 +41,9 @@ class EntityDiscovery:
 
     async def __call__(self, request: Request,
                        entity_id: str = Path(...)) -> dict:
-        sovd_config = request.state.config
+        conf = request.state.conf.predefined_config
         #
-        topology = sovd_config.get('topology', {})
+        topology = conf.get('topology', {})
         collection = topology.get(self.collection_name, {})
         if entity_id not in collection:
             raise HTTPException(
@@ -54,7 +54,7 @@ class EntityDiscovery:
         res['id'] = entity_id
         res['name'] = entity_id
         entity_collection = request.url.path.split('/')[3]
-        entity_ref = sovd_config.get('topology', {}).get(entity_collection, {}).get(entity_id, {})
+        entity_ref = conf.get('topology', {}).get(entity_collection, {}).get(entity_id, {})
         if entity_ref and entity_ref.get('tags', None):
             res['tags'] = []
             for tag in entity_ref['tags']:

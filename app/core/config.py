@@ -46,7 +46,6 @@ class SOVDConfig:
                 sys.exit()
         self.logger.debug(pprint.pformat(self.predefined_config))
 
-sovd_config = SOVDConfig()
 
 def get_logger(name: str) -> logging.Logger:
     return logging.getLogger(name)
