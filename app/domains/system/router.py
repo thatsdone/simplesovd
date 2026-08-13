@@ -11,9 +11,9 @@
 #   Masanori Itoh <masanori.itoh@gmail.com>
 from fastapi import APIRouter, Depends, Request
 #
-from app.core.config import get_logger
+import logging
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 

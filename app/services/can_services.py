@@ -17,10 +17,9 @@ import isotp
 import logging
 from fastapi import Request
 
-from app.core.config import get_logger
-
 can_lock = asyncio.Lock()
-logger = get_logger(__name__)
+
+logger = logging.getLogger(__name__)
 
 # TODO: make it as configurable
 can_timeout = 2.0

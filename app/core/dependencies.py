@@ -12,8 +12,8 @@
 from fastapi import HTTPException, Path, Request, Response, status
 import httpx
 #
-from app.core.config import get_logger
-logger = get_logger(__name__)
+import logging
+logger = logging.getLogger(__name__)
 
 def get_entity_collection(request: Request) -> dict:
     logger.debug('get_entity_collection(): %s' % (request.url))

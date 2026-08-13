@@ -14,10 +14,11 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 #
-from app.core.config import SOVDConfig, get_logger
+import logging
+from app.core.config import SOVDConfig
 from app.api.v1 import api_v1_router, admin_base_router
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 global sovd_config
 sovd_config = None
 
