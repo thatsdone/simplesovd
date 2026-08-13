@@ -10,6 +10,7 @@
 # Author:
 #   Masanori Itoh <masanori.itoh@gmail.com>
 from fastapi import APIRouter, Depends, Request
+from app.core.config import SOVDConfig, get_conf
 #
 import logging
 
@@ -18,7 +19,8 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 @router.get('/version-info')
-async def get_version_info(request: Request):
+async def get_version_info(request: Request,
+                           conf: SOVDConfig = Depends(get_conf)):
     logger.debug("get_version_info() called.")
     conf = request.state.conf.predefined_config
     base_uri = conf['config']['base_uri']
@@ -46,7 +48,8 @@ async def get_root_docs():
 methods = ['GET']
 @router.api_route('/updates', methods=methods)
 @router.api_route('/updates/{subpath:path}', methods=methods)
-async def handle_updates(request: Request, subpath: str = ''):
+async def handle_updates(request: Request, subpath: str = '',
+                         conf: SOVDConfig = Depends(get_conf)):
     logger.debug("handle_updates() called. subpath: %s" % (subpath))
     #TODO: implement /updates
     return {'item': []}

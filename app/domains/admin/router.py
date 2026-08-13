@@ -9,16 +9,19 @@
 #   * 2026/08/09 v0.2 Initial version
 # Author:
 #   Masanori Itoh <masanori.itoh@gmail.com>
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
 #
 import logging
+#
+from app.core.config import SOVDConfig, get_conf
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
 @router.get('')
-async def get_root(request: Request):
+async def get_root(request: Request,
+                   conf: SOVDConfig = Depends(get_conf)):
     logger.debug("get_status() called.")
     conf = request.state.conf.predefined_config
     base_uri = conf['config']['base_uri']
@@ -26,7 +29,8 @@ async def get_root(request: Request):
     return res
 
 @router.get('/status')
-async def get_status(request: Request):
+async def get_status(request: Request,
+                     conf: SOVDConfig = Depends(get_conf)):
     logger.debug("get_status() called.")
     conf = request.state.conf.predefined_config
     base_uri = conf['config']['base_uri']
@@ -47,7 +51,8 @@ async def get_status(request: Request):
 methods = ['GET']
 @router.api_route('/command', methods=methods)
 @router.api_route('/command/{subpath:path}', methods=methods)
-async def handle_command(request: Request, subpath: str = ''):
+async def handle_command(request: Request, subpath: str = '',
+                     conf: SOVDConfig = Depends(get_conf)):
     logger.debug("handle_command() called. subpath: %s" % (subpath))
     #TODO: implement commands
     return {'command': subpath}

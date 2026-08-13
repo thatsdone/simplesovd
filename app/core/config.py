@@ -17,6 +17,8 @@ import logging
 import yaml
 import pprint
 #
+from fastapi import Request
+#
 class SOVDConfig:
     def __init__(self):
         self.debug: bool = True if os.environ.get('SIMPLESOVD_DEBUG') in ('true', '1') else False
@@ -46,3 +48,5 @@ class SOVDConfig:
                 sys.exit()
         self.logger.debug(pprint.pformat(self.predefined_config))
 
+def get_conf(request: Request) -> SOVDConfig:
+    return request.state.conf

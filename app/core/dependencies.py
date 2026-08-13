@@ -18,7 +18,6 @@ logger = logging.getLogger(__name__)
 def get_entity_collection(request: Request) -> dict:
     logger.debug('get_entity_collection(): %s' % (request.url))
     entity_collection = request.url.path.split('/')[3]
-
     conf = request.state.conf.predefined_config
     res = {'items': []}
     for item in conf.get('topology', {}).get(entity_collection, {}):
