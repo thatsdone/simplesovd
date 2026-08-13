@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 def get_entity_collection(request: Request) -> dict:
     logger.debug('get_entity_collection(): %s' % (request.url))
     entity_collection = request.url.path.split('/')[3]
-    conf = request.state.conf.predefined_config
+    conf = request.state.conf.static_conf
     res = {'items': []}
     for item in conf.get('topology', {}).get(entity_collection, {}):
         elm = conf.get('topology', {}).get(entity_collection, {}).get(item, None)
@@ -40,7 +40,7 @@ class EntityDiscovery:
 
     async def __call__(self, request: Request,
                        entity_id: str = Path(...)) -> dict:
-        conf = request.state.conf.predefined_config
+        conf = request.state.conf.static_conf
         #
         topology = conf.get('topology', {})
         collection = topology.get(self.collection_name, {})

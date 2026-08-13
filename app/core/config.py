@@ -41,12 +41,12 @@ class SOVDConfig:
         if not os.path.exists(self.simplesovd_config):
             return {}
         #
-        self.predefined_config = None
+        self.static_conf = None
         with open(self.simplesovd_config, 'rt') as fp:
-            self.predefined_config = yaml.load(fp, Loader=yaml.SafeLoader)
-            if not self.predefined_config:
+            self.static_conf = yaml.load(fp, Loader=yaml.SafeLoader)
+            if not self.static_conf:
                 sys.exit()
-        self.logger.debug(pprint.pformat(self.predefined_config))
+        self.logger.debug(pprint.pformat(self.static_conf))
 
 def get_conf(request: Request) -> SOVDConfig:
     return request.state.conf

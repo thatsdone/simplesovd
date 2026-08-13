@@ -36,7 +36,7 @@ app = FastAPI(
 #
 #
 sovd_config = SOVDConfig()
-vendor_prefix = sovd_config.predefined_config['config']['vendor_prefix']
+vendor_prefix = sovd_config.static_conf['config']['vendor_prefix']
 #
 app.include_router(api_v1_router, prefix=vendor_prefix)
 app.include_router(admin_base_router)

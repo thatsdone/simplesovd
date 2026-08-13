@@ -24,9 +24,10 @@ logger = logging.getLogger(__name__)
 # TODO: make it as configurable
 can_timeout = 2.0
 
+# Note: dependency injection does not work here.
 def _blocking_isotp_worker(payload: bytes, request: Request):
 
-    conf = request.state.conf.predefined_config
+    conf = request.state.conf.static_conf
     can_interface = conf.get('config', {}).get('can_interface', None)
     if not can_interface:
         logger.error('can_interface not found in config.')
@@ -55,7 +56,6 @@ def _blocking_isotp_worker(payload: bytes, request: Request):
 async def can_query(payload: bytes, request: Request) -> bytes:
 
     logger.debug('can_query() called.')
-    conf = request.state.conf.predefined_config
 
     async with can_lock:
         try:

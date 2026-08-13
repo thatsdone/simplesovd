@@ -23,8 +23,7 @@ router = APIRouter()
 async def get_root(request: Request,
                    conf: SOVDConfig = Depends(get_conf)):
     logger.debug("get_status() called.")
-    conf = request.state.conf.predefined_config
-    base_uri = conf['config']['base_uri']
+    base_uri = conf.static_conf['config']['base_uri']
     res = {'items': ['status','command']}
     return res
 
@@ -32,10 +31,9 @@ async def get_root(request: Request,
 async def get_status(request: Request,
                      conf: SOVDConfig = Depends(get_conf)):
     logger.debug("get_status() called.")
-    conf = request.state.conf.predefined_config
-    base_uri = conf['config']['base_uri']
-    vendor_prefix = conf['config']['vendor_prefix']
-    version = conf['config']['version']
+    base_uri = conf.static_conf['config']['base_uri']
+    vendor_prefix = conf.static_conf['config']['vendor_prefix']
+    version = conf.static_conf['config']['version']
     res = {
         'version': '1.1',
         'base_uri': base_uri,
