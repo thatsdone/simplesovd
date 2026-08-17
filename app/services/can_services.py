@@ -65,6 +65,6 @@ async def can_query(payload: bytes, request: Request) -> bytes:
         except Exception as e:
             logger.error(f'Failed CAN transaction: {e}')
             raise HTTPException(
-                status_code = status. HTTP_503_SERVICE_UNAVAILABLE,
+                status_code = status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail=f'Service unavailable'
             )

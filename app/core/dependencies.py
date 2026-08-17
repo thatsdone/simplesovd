@@ -91,7 +91,7 @@ class EntityDiscovery:
             except Exception as e:
                 logger.error(f'Exception: {e}' )
                 raise HTTPException(
-                    status_code = status. HTTP_503_SERVICE_UNAVAILABLE,
+                    status_code = status.HTTP_503_SERVICE_UNAVAILABLE,
                     detail=f'Service unavailable'
                 )
 
