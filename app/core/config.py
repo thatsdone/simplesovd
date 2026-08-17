@@ -26,7 +26,7 @@ class SOVDConfig:
         #
         self.log_level = logging.DEBUG if self.debug else logging.INFO
 
-        fmt = '%(asctime)s.%(msecs)03d %(levelname)s: %(message)s'
+        fmt = '%(asctime)s.%(msecs)03d %(levelname)s: %(funcName)s: %(message)s'
         datefmt='%Y/%m/%d %H:%M:%S'
         logging.basicConfig(
             level = self.log_level,
