@@ -43,6 +43,14 @@ async def get_status(request: Request,
         },
         'status': 'UP'
     }
+    # list configured entity/resource paths
+    res['paths'] = list()
+    for route in request.app.routes:
+        res['paths'].append(
+            {
+                'path':  route.path,
+                'methods': route.methods
+            })
     return res
 
 #methods = ['GET', 'DELETE', 'POST', 'PUT']
