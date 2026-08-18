@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# simplesovd: A simple implementation of SOVD (ISO 17973)
+# simplesovd: A simple implementation of SOVD (ISO 17978)
 #
 # License:
 #   Apache License, Version 2.0

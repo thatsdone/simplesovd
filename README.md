@@ -1,11 +1,11 @@
 # simplesovd
 
 A simple implementation of SOVD (Service Oriented Vehicle Diagnostics),
-ISO 17973.
+ISO 17978.
 
 ## Description
 
-simplesovd is a tiny SOVD (Service Oriented Vehicle Diagnostics, ISO 17973)
+simplesovd is a tiny SOVD (Service Oriented Vehicle Diagnostics, ISO 17978)
 implementation on top of Python FastAPI. It's intended solely for
 research and/or POC purposes, not for production.
 
@@ -67,11 +67,11 @@ Masanori Itoh <masanori.itoh@gmail.com>
 ### Standards
 * ASAM SOVD
   * https://www.asam.net/standards/detail/sovd/
-* ISO 17988-1 - Part 1: General information, definitions, rules and basic principles
+* ISO 17978-1 - Part 1: General information, definitions, rules and basic principles
   * https://www.iso.org/standard/85133.html
-* ISO 17988-2 - Part 2: Use cases definition
+* ISO 17978-2 - Part 2: Use cases definition
   * https://www.iso.org/standard/86586.html
-* ISO 17988-3 - Part 3: Application programming interface (API)
+* ISO 17978-3 - Part 3: Application programming interface (API)
   * https://www.iso.org/standard/86587.html
 * ISO Standards Maintenance Portal (ISO17978)
   * https://standards.iso.org/iso/17978/
