@@ -36,6 +36,10 @@ class SOVDConfig:
                 logging.StreamHandler(sys.stdout)
             ]
         )
+
+        logging.getLogger('httpx').setLevel(logging.WARNING)
+        logging.getLogger('httpcore').setLevel(logging.WARNING)
+
         self.logger = logging.getLogger(__name__)
         #
         if not os.path.exists(self.simplesovd_config):
