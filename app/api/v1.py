@@ -18,9 +18,15 @@ from app.domains.functions.router import router as functions_router
 from app.domains.system.router import router as system_router
 #
 from app.domains.admin.router import router as admin_router
+#
+from app.plugins import load_plugins
 
 
 api_v1_router = APIRouter()
+
+# We must call 'load_plugins()' here before other including other routers
+# with wildcard path expressions. Otherwise, plugin modules cannot be found.
+load_plugins(api_v1_router)
 
 # SOVD top level entities. a.k.a. entity-collection
 api_v1_router.include_router(areas_router,

@@ -38,19 +38,11 @@ async def get_function_by_id(request: Request,
 
     return function_data
 
-from  app.services.can_services import can_query
 @router.api_route('/{entity_id}/{subpath:path}', methods=methods)
 async def get_function_with_subpath(request: Request,
                                     function_data: dict = Depends(get_current_app),
                                     subpath: str = '',
                                     conf: SOVDConfig = Depends(get_conf)):
     logger.debug('get_function_with_subpath() called: %s ', subpath)
-
-    # DEBUG for built-in CDA(WIP)
-    if request.url.path.split('/')[4] == 'UDSGateway' and subpath == 'data/vin':
-        response = await can_query(bytes([0x22, 0xF1, 0x90]), request)
-        logger.debug('VIN(hex isotp response): ' + ' '.join('%02X' % response[idx]for idx in range(0, len(response))))
-        logger.debug('VIN(str): ' + response[3:].decode('utf-8'))
-        function_data['vin'] = response[3:].decode('utf-8')
 
     return function_data

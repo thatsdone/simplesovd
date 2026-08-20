@@ -44,7 +44,15 @@ class EntityDiscovery:
         #
         topology = conf.get('topology', {})
         collection = topology.get(self.collection_name, {})
-        if entity_id not in collection:
+        #
+        found = False
+        for route in request.app.routes:
+            if entity_id in route.path.split('/'):
+                logging.debug(f'Found {entity_id } in {route.path}')
+                found = True
+                break
+
+        if (not found) and (entity_id not in collection):
             raise HTTPException(
                 status_code = status.HTTP_404_NOT_FOUND,
                 detail=f'{self.collection_name} {entity_id} not found in the current topology'

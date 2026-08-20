@@ -15,12 +15,14 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 #
 import logging
+
 from app.core.config import SOVDConfig
+# need to instantiate before importing api_v1_router
+sovd_config = SOVDConfig()
+
 from app.api.v1 import api_v1_router, admin_base_router
 
 logger = logging.getLogger(__name__)
-global sovd_config
-sovd_config = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -35,7 +37,6 @@ app = FastAPI(
     lifespan=lifespan)
 #
 #
-sovd_config = SOVDConfig()
 vendor_prefix = sovd_config.static_conf['config']['vendor_prefix']
 #
 app.include_router(api_v1_router, prefix=vendor_prefix)
