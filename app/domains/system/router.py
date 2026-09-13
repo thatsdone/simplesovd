@@ -9,9 +9,12 @@
 # Author:
 #   Masanori Itoh <masanori.itoh@gmail.com>
 from fastapi import APIRouter, Depends, Request
-from app.core.config import SOVDConfig, get_conf
+from fastapi.openapi.utils import get_openapi
 #
+import copy
 import logging
+
+from app.core.config import SOVDConfig, get_conf
 
 logger = logging.getLogger(__name__)
 
@@ -35,12 +38,28 @@ async def get_version_info(request: Request,
     return res
 
 @router.get('/docs')
-async def get_root_docs():
+async def get_root_docs(request: Request):
     logger.debug('get_root_docs() called.')
-    res = {
-        'doc': 'foobar'
-    }
-    return res
+    full_spec = copy.deepcopy(get_openapi(title='Service Oriented Vehicle Diagnostics (SOVD) API',
+                                          version='1.1.0',
+                                          routes=request.app.routes))
+    filtered_paths = {}
+    vendor_prefix = request.state.conf.static_conf['config']['vendor_prefix']
+    for path, action in full_spec.get('paths', {}).items():
+        if path.startswith(vendor_prefix):
+            filtered_paths[path] = action
+    full_spec['paths'] = filtered_paths
+
+    return full_spec
+
+@router.get('/{anypath:path}/docs')
+async def get_docs(request: Request, anypath: str):
+    logger.debug(f'get_docs() called. {anypath}')
+    full_spec = copy.deepcopy(get_openapi(title='Service Oriented Vehicle Diagnostics (SOVD) API',
+                                          version='1.1.0',
+                                          routes=request.app.routes))
+    # TODO: Implement per entity online capability processing.
+    return full_spec
 
 #methods = ['GET', 'DELETE', 'POST', 'PUT']
 methods = ['GET']

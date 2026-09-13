@@ -27,6 +27,10 @@ api_v1_router = APIRouter()
 # with wildcard path expressions. Otherwise, plugin modules cannot be found.
 load_plugins(api_v1_router)
 
+# SOVD other top level path. Include before other entity routers
+api_v1_router.include_router(system_router,
+                             tags=['SOVD Other elements'])
+
 # SOVD top level entities. a.k.a. entity-collection
 api_v1_router.include_router(areas_router,
                              prefix=f'/areas',
@@ -40,9 +44,6 @@ api_v1_router.include_router(apps_router,
 api_v1_router.include_router(functions_router,
                              prefix=f'/functions',
                              tags=['SOVD functions'])
-# SOVD other top level path
-api_v1_router.include_router(system_router,
-                             tags=['SOVD Other elements'])
 
 # for the SOVD server administration
 admin_base_router = APIRouter()
