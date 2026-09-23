@@ -14,6 +14,8 @@ import httpx
 import logging
 logger = logging.getLogger(__name__)
 
+from app.core.utils import get_all_routes
+
 def get_entity_collection(request: Request) -> dict:
     logger.debug('get_entity_collection(): %s' % (request.url))
     entity_collection = request.url.path.split('/')[3]
@@ -45,8 +47,9 @@ class EntityDiscovery:
         collection = topology.get(self.collection_name, {})
         #
         found = False
-        for route in request.app.routes:
-            if entity_id in route.path.split('/'):
+        flat_routes = get_all_routes(request.app.routes)
+        for route in flat_routes:
+            if entity_id in route[0].split('/'):
                 logging.debug(f'Found {entity_id } in {route.path}')
                 found = True
                 break
@@ -77,17 +80,20 @@ class EntityDiscovery:
         #
         if entity_ref and entity_ref.get('href', None):
             href = entity_ref.get('href')
+            subpath = request.url.path.split('/')[5:]
+            url = href
+            if len(subpath) > 0 and subpath[0] != '':
+                url = f'{href}/{"/".join(subpath)}'
 
-            client = httpx.AsyncClient() #base_url=href)
-
+            client = httpx.AsyncClient(follow_redirects=True)
             try:
                 backend_resp = await client.request(
                     method=request.method,
-                    url = href + '/' + '/'.join(request.url.path.split('/')[5:]),
+                    url = url,
                     params=request.query_params,
                     headers=request.headers,
                     #TODO: handle Request body (and response...)
-                    #content=request.body(),
+                    content=await request.body(),
                     timeout=5.0
                 )
                 return Response(

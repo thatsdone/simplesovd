@@ -9,11 +9,12 @@
 # Author:
 #   Masanori Itoh <masanori.itoh@gmail.com>
 from fastapi import APIRouter, Request, Depends
+from fastapi.routing import APIRoute, _IncludedRouter
 #
 import logging
 #
 from app.core.config import SOVDConfig, get_conf
-
+from app.core.utils import get_all_routes
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
@@ -42,13 +43,15 @@ async def get_status(request: Request,
         },
         'status': 'UP'
     }
+
     # list configured entity/resource paths
+    flat_routes = get_all_routes(request.app.routes)
     res['paths'] = list()
-    for route in request.app.routes:
+    for route in flat_routes:
         res['paths'].append(
             {
-                'path':  route.path,
-                'methods': route.methods
+                'path':  route[0],
+                'methods': route[1]
             })
     return res
 
